@@ -9,5 +9,5 @@ import com.example.foundation.database.entity.bid.BidEntity
 abstract class BidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertBids(offers: List<BidEntity>)
+    abstract fun insertBids(bids: List<BidEntity>)
 }

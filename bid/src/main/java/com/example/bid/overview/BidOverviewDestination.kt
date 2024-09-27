@@ -2,11 +2,12 @@ package com.example.bid.overview
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.example.bid.overview.view.BidOverviewDataLoaded
+import com.example.bid.overview.view.screen.BidOverviewInitialLoading
 import com.example.bid.overview.viewmodel.BidOverviewNavEffect
 import com.example.bid.overview.viewmodel.BidOverviewUserIntent
 import com.example.bid.overview.viewmodel.BidOverviewViewModel
 import com.example.bid.overview.viewmodel.BidOverviewViewState
-import com.example.bid.overview.viewmodel.ViewState
 import com.example.foundation.navigation.NavigationManager
 import kotlinx.coroutines.flow.Flow
 
@@ -31,10 +32,15 @@ fun BidOverviewDestination(
 
     when (viewState) {
         is BidOverviewViewState.InitialView -> {
-
+            BidOverviewInitialLoading(
+                userIntent = onUserAction(),
+            )
         }
         is BidOverviewViewState.DataLoaded -> {
-
+            BidOverviewDataLoaded(
+                viewState = viewState,
+                userIntent = onUserAction(),
+            )
         }
     }
 

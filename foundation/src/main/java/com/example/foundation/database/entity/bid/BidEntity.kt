@@ -15,8 +15,8 @@ class BidEntity(
     @ColumnInfo(name = "collectable_id")
     val collectableId: Int = Int.emptyValue(),
 
-    @ColumnInfo(name = "user_id")
-    val userId: Int = Int.emptyValue(),
+    @ColumnInfo(name = "user_name")
+    val userName: String = String.emptyValue(),
 
     @ColumnInfo(name = "bid_amount")
     val bidAmount: Int = Int.emptyValue(),

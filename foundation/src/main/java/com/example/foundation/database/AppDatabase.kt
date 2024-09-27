@@ -8,13 +8,11 @@ import com.example.foundation.database.dao.bid.BidDao
 import com.example.foundation.database.dao.collectable.CollectableDao
 import com.example.foundation.database.entity.bid.BidEntity
 import com.example.foundation.database.entity.collectable.CollectableEntity
-import com.example.foundation.database.entity.user.UserEntity
 
 @Database(
     entities = [
         BidEntity::class,
         CollectableEntity::class,
-        UserEntity::class,
     ],
     version = 1,
     exportSchema = false,

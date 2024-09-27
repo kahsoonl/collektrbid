@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 abstract class CollectableDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertCollectables(collectables: List<CollectableEntity>)
+    abstract fun insertCollectables(collectables: List<CollectableEntity>): List<Long>
 
     @Query("SELECT * FROM $COLLECTABLE_TABLE")
-    abstract fun getAllCollectables(): Flow<List<CollectableEntity>>
+    abstract fun getAllCollectables(): Flow<List<CollectableWithRelation>>
 
     @Transaction
     @Query("SELECT * FROM $COLLECTABLE_TABLE WHERE id = :collectableId")

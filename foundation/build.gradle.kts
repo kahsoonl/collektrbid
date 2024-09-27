@@ -73,6 +73,9 @@ dependencies {
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 
+    // Datastore
+    implementation(libs.datastore)
+
     // AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
