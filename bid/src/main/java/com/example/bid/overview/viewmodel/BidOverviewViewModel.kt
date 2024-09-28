@@ -1,7 +1,7 @@
 package com.example.bid.overview.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.bid.overview.data.BidOverviewUseCase
+import com.example.bid.overview.domain.BidOverviewUseCase
 import com.example.foundation.mvicore.ui.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,6 +20,11 @@ class BidOverviewViewModel @Inject constructor(
             when (intent) {
                 is BidOverviewUserIntent.FetchCollectableData -> {
                     fetchCollectableAndEmit()
+                }
+                is BidOverviewUserIntent.CollectableOnClick -> {
+                    sendNavEffect {
+                        BidOverviewNavEffect.NavigateToDetail(intent.collectableId)
+                    }
                 }
             }
         }

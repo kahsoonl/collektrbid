@@ -8,10 +8,10 @@ import androidx.navigation.NavHostController
  * Navigation Controller - It handles all push and pop operations.
  */
 fun navigateToDestination(
-    navObject: NavigationCommand,
+    navObject: NavCommandWithArgs,
     navController: NavHostController,
 ) {
-    when (navObject.route) {
+    when (navObject.command.route) {
         NavigationCommand.PopBackStack.route -> navController.managePopOperations()
 
         NavigationCommand.BidOverview.route,
@@ -48,13 +48,24 @@ private fun NavHostController.managePopOperations() {
  * @param popUpToFlag - It maintains if [popUpToRoute] should be used or not.
  */
 private fun checkNavArgsAndNavigate(
-    navObject: NavigationCommand,
+    navObject: NavCommandWithArgs,
     navController: NavHostController,
     popUpToRoute: String? = null,
     inclusiveFlag: Boolean = false,
     popUpToFlag: Boolean = false,
 ) {
-    val route = navObject.route
+    val argument = navObject.arguments
+    var route = navObject.command.route
+    if (argument != null) {
+        // To handle multiple argument case, should be list of String
+        if (argument is List<*>) {
+            argument.forEach {
+                route = route.plus("/").plus(it)
+            }
+        } else {
+            route = route.plus("/").plus(argument)
+        }
+    }
 
     navigate(
         navController = navController,

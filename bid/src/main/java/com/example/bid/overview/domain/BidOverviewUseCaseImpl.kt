@@ -1,4 +1,4 @@
-package com.example.bid.overview.data
+package com.example.bid.overview.domain
 
 import com.example.bid.detail.domain.model.BidModel
 import com.example.bid.overview.data.repository.BidOverviewLocalRepository

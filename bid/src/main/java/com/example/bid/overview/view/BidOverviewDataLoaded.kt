@@ -1,6 +1,7 @@
 package com.example.bid.overview.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -22,7 +23,13 @@ fun BidOverviewDataLoaded(
             .fillMaxSize(),
     ) {
         itemsIndexed(viewState.collectableList) { index, item ->
-            Text(item.collectableName)
+            Text(
+                text = item.collectableName,
+                modifier = Modifier
+                    .clickable {
+                        userIntent.invoke(BidOverviewUserIntent.CollectableOnClick(item.collectableId))
+                    }
+            )
         }
     }
 }

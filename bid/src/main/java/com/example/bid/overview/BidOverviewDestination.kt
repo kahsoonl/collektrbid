@@ -8,6 +8,7 @@ import com.example.bid.overview.viewmodel.BidOverviewNavEffect
 import com.example.bid.overview.viewmodel.BidOverviewUserIntent
 import com.example.bid.overview.viewmodel.BidOverviewViewModel
 import com.example.bid.overview.viewmodel.BidOverviewViewState
+import com.example.foundation.navigation.NavigationCommand
 import com.example.foundation.navigation.NavigationManager
 import kotlinx.coroutines.flow.Flow
 
@@ -25,7 +26,12 @@ fun BidOverviewDestination(
     fun handleEffect(effect: BidOverviewNavEffect) {
         when (effect) {
             is BidOverviewNavEffect.NavigateToDetail -> {
-
+                navigationManager.navigateTo(
+                    command = NavigationCommand.BidDetail,
+                    arguments = listOf(
+                        effect.collectableId,
+                    )
+                )
             }
         }
     }

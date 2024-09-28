@@ -18,6 +18,7 @@ sealed class BidOverviewViewState {
 
 sealed class BidOverviewUserIntent : UserIntent {
     data object FetchCollectableData : BidOverviewUserIntent()
+    data class CollectableOnClick(val collectableId: Int) : BidOverviewUserIntent()
 }
 
 sealed class BidOverviewNavEffect : NavEffect {

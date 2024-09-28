@@ -6,16 +6,25 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
+data class NavCommandWithArgs(
+    val command: NavigationCommand = NavigationCommand.None,
+    val arguments: Any? = null,
+    val overrideBackCommand: NavigationCommand? = null,
+)
+
 class NavigationManagerImpl(private val scope: CoroutineScope) : NavigationManager {
 
-    private val _navCommand = MutableSharedFlow<NavigationCommand>()
+    private val _navCommand = MutableSharedFlow<NavCommandWithArgs>()
 
-    override var navCommand: SharedFlow<NavigationCommand> = _navCommand.asSharedFlow()
+    override var navCommand: SharedFlow<NavCommandWithArgs> = _navCommand.asSharedFlow()
 
     override fun navigateTo(command: NavigationCommand, arguments: Any?) {
         scope.launch {
             _navCommand.emit(
-                command,
+                NavCommandWithArgs(
+                    command = command,
+                    arguments = arguments,
+                ),
             )
         }
     }
@@ -23,7 +32,9 @@ class NavigationManagerImpl(private val scope: CoroutineScope) : NavigationManag
     override fun popBackStack() {
         scope.launch {
             _navCommand.emit(
-                NavigationCommand.PopBackStack,
+                NavCommandWithArgs(
+                    command = NavigationCommand.PopBackStack,
+                ),
             )
         }
     }
