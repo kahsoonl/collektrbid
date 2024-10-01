@@ -7,3 +7,9 @@ ViewModel: Manages the state and minor business logic as well as processes the u
 Use Case: Use case holds the majority of the business as well as other logics that is required by each different feature and also serves as the intermediate with repository and data related operations before returning the resulted data to ViewModel for presentation on the view layer.
 Repository: Serves as the single source of truth for data to their respective module in the application.
 
+The app is divided into different modules:-
+app: holds the base app as well as other initialization processes here
+foundation: holds most of the foundationary codes as well as functions / components that is shared among different modules, as well as the app themes and various other base functions here
+bid: holds the bidding module which consists of an overview page and a detail page
+
+This modularity approach allows for better maintainability as well as scalability in terms of team size as these modules will be separated into a different repository if the dev team and the project itself is large and will enable for a smoother merging process across different team. But since this is a demo project it's here for demonstration purpose.
