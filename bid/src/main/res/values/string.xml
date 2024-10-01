@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bid_overview_on_going_bid">On-going bids</string>
+    <string name="bid_custom_button_text">Custom</string>
+    <string name="bid_increment_button_text">Bid: RM%1$d</string>
+    <string name="bid_item_info_price">RM %1$d</string>
+    <string name="bid_chat_input_hint">Type your message here and press enter to send</string>
+    <string name="bid_detail_bid_history">Bid History</string>
+</resources>

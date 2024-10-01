@@ -22,7 +22,6 @@ class BidOverviewUseCaseImpl @Inject constructor(
                             BidModel(
                                 bidId = bidEntity.bidId,
                                 bidAmount = bidEntity.bidAmount,
-                                bidDateTime = bidEntity.bidDateTime,
                                 userName = bidEntity.userName,
                             )
                         },

@@ -2,6 +2,7 @@ package com.example.bid.detail.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.bid.detail.domain.BidDetailUseCase
+import com.example.bid.detail.domain.model.ChatModel
 import com.example.foundation.mvicore.ui.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,6 +22,10 @@ class BidDetailViewModel @Inject constructor(
                 is BidDetailUserIntent.FetchDetailData -> {
                     fetchDetailData(collectableId = intent.collectableId)
                 }
+
+                is BidDetailUserIntent.Bid -> {
+
+                }
             }
         }
     }
@@ -31,6 +36,7 @@ class BidDetailViewModel @Inject constructor(
                 copy(
                     bidDetailViewState = BidDetailViewState.DataLoaded(
                         collectableModel = collectableModel,
+                        chatList = ChatModel.dummyData,
                     )
                 )
             }

@@ -36,14 +36,27 @@ class InitDummyDataContractImpl @Inject constructor(
                 ),
             )
         )
-        val bidDummyData = collectableIds.map { collectableId ->
-            BidEntity(
-                collectableId = collectableId.toInt(),
-                userName = "Mike $collectableId",
-                bidAmount = 50 + collectableId.toInt(),
-                bidDateTime = "2024-09-27T14:00:00Z",
+        collectableIds.forEach { collectableId ->
+
+            val bidDummyData = listOf(
+                BidEntity(
+                    collectableId = collectableId.toInt(),
+                    userName = "DarkMagician33 $collectableId",
+                    bidAmount = 50 + collectableId.toInt(),
+                ),
+                BidEntity(
+                    collectableId = collectableId.toInt(),
+                    userName = "NecessityNotLuxury $collectableId",
+                    bidAmount = 60 + collectableId.toInt(),
+                ),
+                BidEntity(
+                    collectableId = collectableId.toInt(),
+                    userName = "smallSpoon2 $collectableId",
+                    bidAmount = 70 + collectableId.toInt(),
+                ),
             )
+
+            bidDao.insertBids(bidDummyData)
         }
-        bidDao.insertBids(bidDummyData)
     }
 }

@@ -20,7 +20,4 @@ class BidEntity(
 
     @ColumnInfo(name = "bid_amount")
     val bidAmount: Int = Int.emptyValue(),
-
-    @ColumnInfo(name = "bid_date_time")
-    val bidDateTime: String = String.emptyValue(),
 )
