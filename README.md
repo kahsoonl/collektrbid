@@ -1,5 +1,13 @@
 The app itself consists of a Overview Page (bid listing page) and a detail page (Bidding page) with a bottom sheet page (Collectable Detail) to show more info and image regarding the collectable as well as recent bid history.
 
+Things to note:
+1. The blank black screen on the detail page are meant as live video placeholders.
+2. The timer currently starts countdown from 30 minutes everytime we exit and entering, but I think in real world usage there are different ways to fix this depending on the API implementation
+
+Running the app:
+1. Clone the repository
+2. Run the project on emulator / physical device
+
 The app is built with MVI architecture and MVI aligns with CLEAN architecture well as MVI also enforces a clear separation of concern as well as responsibilities into layers as follows:
 View: Responsible for holding the presentation logic as well as user interactions with each view elements.
 User Intents: Intents represents the potential interaction user can make with the app itself
