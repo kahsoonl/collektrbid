@@ -19,5 +19,5 @@ class BidEntity(
     val userName: String = String.emptyValue(),
 
     @ColumnInfo(name = "bid_amount")
-    val bidAmount: Int = Int.emptyValue(),
+    val bidAmount: Double = Double.emptyValue(),
 )

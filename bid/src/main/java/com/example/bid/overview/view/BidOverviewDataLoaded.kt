@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bid.R
+import com.example.bid.overview.view.uicomponents.BidOverviewAppBar
 import com.example.bid.overview.viewmodel.BidOverviewUserIntent
 import com.example.bid.overview.viewmodel.BidOverviewViewState
 
@@ -37,13 +38,17 @@ fun BidOverviewDataLoaded(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(
-                16.dp,
-            ),
     ) {
+        item {
+            BidOverviewAppBar()
+        }
         item {
             Text(
                 text = stringResource(R.string.bid_overview_on_going_bid),
+                modifier = Modifier
+                    .padding(
+                        16.dp
+                    ),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
             )
@@ -53,6 +58,7 @@ fun BidOverviewDataLoaded(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
+                        horizontal = 16.dp,
                         vertical = 8.dp
                     )
                     .clip(

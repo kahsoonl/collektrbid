@@ -16,6 +16,7 @@ abstract class CollectableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertCollectables(collectables: List<CollectableEntity>): List<Long>
 
+    @Transaction
     @Query("SELECT * FROM $COLLECTABLE_TABLE")
     abstract fun getAllCollectables(): Flow<List<CollectableWithRelation>>
 

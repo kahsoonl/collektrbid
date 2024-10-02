@@ -4,6 +4,7 @@ import com.example.bid.detail.data.repository.BidDetailLocalRepository
 import com.example.bid.detail.data.repository.BidDetailLocalRepositoryImpl
 import com.example.bid.detail.domain.BidDetailUseCase
 import com.example.bid.detail.domain.BidDetailUseCaseImpl
+import com.example.foundation.database.dao.bid.BidDao
 import com.example.foundation.database.dao.collectable.CollectableDao
 import dagger.Module
 import dagger.Provides
@@ -16,8 +17,11 @@ import javax.inject.Singleton
 object BidDetailModule {
     @Singleton
     @Provides
-    fun provideBidDetailLocalRepository(collectableDao: CollectableDao): BidDetailLocalRepository =
-        BidDetailLocalRepositoryImpl(collectableDao)
+    fun provideBidDetailLocalRepository(
+        collectableDao: CollectableDao,
+        bidDao: BidDao
+    ): BidDetailLocalRepository =
+        BidDetailLocalRepositoryImpl(collectableDao, bidDao)
 
     @Singleton
     @Provides

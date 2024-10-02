@@ -10,4 +10,7 @@ abstract class BidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertBids(bids: List<BidEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertBid(bid: BidEntity): Long
 }

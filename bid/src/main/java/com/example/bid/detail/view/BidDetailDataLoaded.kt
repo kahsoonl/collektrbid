@@ -32,18 +32,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bid.R
 import com.example.bid.detail.domain.model.ChatModel
+import com.example.bid.detail.view.screen.BidDetailCustomBidDialog
 import com.example.bid.detail.viewmodel.BidDetailUserIntent
 import com.example.bid.detail.viewmodel.BidDetailViewState
 import com.example.bid.overview.domain.model.CollectableModel
@@ -59,6 +61,8 @@ import com.example.foundation.design.reusable_component.AppButton
 import com.example.foundation.design.reusable_component.AppButtonWhite
 import com.example.foundation.design.reusable_component.GenericModalBottomSheet
 import com.example.foundation.design.theme.AppTheme
+import kotlinx.coroutines.delay
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,26 +70,29 @@ fun BidDetailDataLoaded(
     viewState: BidDetailViewState.DataLoaded,
     userIntent: (BidDetailUserIntent) -> Unit,
 ) {
+    // Hoist State
     val chatBoxTextState = remember { mutableStateOf("") }
-    val chatBoxTextValue = remember { derivedStateOf { chatBoxTextState.value } }
-    val chatListState = rememberLazyListState()
     val collectableInfoBottomSheetState = remember { mutableStateOf(false) }
-    val showBottomSheetState = remember { derivedStateOf { collectableInfoBottomSheetState.value } }
+    val showCustomBidState = remember { mutableStateOf(false) }
+
+    val chatListState = rememberLazyListState()
     val sheetState = rememberModalBottomSheetState()
 
     Column(
         modifier = Modifier
-            .background(Color.Cyan)
+            .background(Color.Black)
             .fillMaxSize(),
     ) {
-        BidDetailToolbar()
+        BidDetailToolbar(
+            userIntent = userIntent,
+        )
         Spacer(modifier = Modifier.weight(1f))
         BidDetailChatWindow(
             messages = viewState.chatList,
             chatState = chatListState,
         )
         BidDetailChatInput(
-            inputValue = chatBoxTextValue,
+            inputValue = chatBoxTextState.value,
             onValueChange = {
                 chatBoxTextState.value = it
             }
@@ -99,22 +106,81 @@ fun BidDetailDataLoaded(
         BidButtonRow(
             userIntent = userIntent,
             collectableModel = viewState.collectableModel,
+            customClick = {
+                showCustomBidState.value = true
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
         BidDetailItemInfoBottomSheet(
-            bottomSheetState = showBottomSheetState,
+            showBottomSheet = collectableInfoBottomSheetState.value,
             onDismiss = {
                 collectableInfoBottomSheetState.value = false
             },
             sheetState = sheetState,
             collectableModel = viewState.collectableModel,
         )
+        if (showCustomBidState.value) {
+            BidDetailCustomBidDialog(
+                onDismiss = {
+                    showCustomBidState.value = false
+                },
+                onValueChange = {
+                    userIntent.invoke(BidDetailUserIntent.CustomBidInput(it))
+                },
+                onPositive = {
+                    userIntent.invoke(
+                        BidDetailUserIntent.Bid(
+                            bidAmount = viewState.customBidInput.customBidInput.toDouble(),
+                            collectableId = viewState.collectableModel.collectableId,
+                        )
+                    )
+                    showCustomBidState.value = false
+                },
+                bidInputValue = viewState.customBidInput.customBidInput,
+                showError = viewState.customBidInput.showError,
+            )
+        }
+    }
+}
+
+@Composable
+fun BidDetailTimer(timeInSeconds: Int, onTick: () -> Unit) {
+
+    LaunchedEffect(timeInSeconds) {
+        if (timeInSeconds > 0) {
+            delay(1000L)
+            onTick.invoke()
+        }
+    }
+
+    val displayMinutes = timeInSeconds / 60
+    val displaySeconds = timeInSeconds % 60
+
+    Box(
+        modifier = Modifier
+            .padding(
+                horizontal = 16.dp,
+            ),
+    ) {
+        Text(
+            text = String.format(
+                Locale.UK,
+                "Bid Ends In: %02d:%02d",
+                displayMinutes,
+                displaySeconds
+            ),
+            color = Color.White,
+        )
     }
 }
 
 
 @Composable
-fun BidDetailToolbar() {
+fun BidDetailToolbar(
+    userIntent: (BidDetailUserIntent) -> Unit,
+) {
+    val timeInSeconds = remember { mutableIntStateOf(1800) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -123,6 +189,17 @@ fun BidDetailToolbar() {
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        IconButton(
+            onClick = {
+                userIntent.invoke(BidDetailUserIntent.OnBackPress)
+            }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_arrow_back),
+                contentDescription = "back icon",
+                tint = Color.White,
+            )
+        }
         Image(
             painter = painterResource(R.drawable.ic_person),
             contentDescription = "user profile image",
@@ -137,6 +214,13 @@ fun BidDetailToolbar() {
             text = "BidPosterNameHere",
             fontWeight = FontWeight.Bold,
             color = Color.White,
+        )
+        Spacer(Modifier.weight(1f))
+        BidDetailTimer(
+            timeInSeconds = timeInSeconds.intValue,
+            onTick = {
+                timeInSeconds.intValue -= 1
+            }
         )
     }
 }
@@ -207,35 +291,34 @@ fun BidDetailChatMessage(
 
 @Composable
 fun BidDetailChatInput(
-    inputValue: State<String>,
+    inputValue: String,
     onValueChange: (String) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Row(
         modifier = Modifier
+            .padding(
+                horizontal = 16.dp,
+            )
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Surface(
             modifier = Modifier
                 .height(40.dp)
-                .weight(1f)
-                .padding(
-                    horizontal = 16.dp,
-                ),
+                .weight(1f),
             shape = RoundedCornerShape(16.dp),
-            color = Color.Black.copy(
+            color = Color.Gray.copy(
                 alpha = 0.3f,
             ),
         ) {
             BasicTextField(
-                value = inputValue.value,
+                value = inputValue,
                 enabled = true,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                    ),
+                modifier = Modifier.padding(
+                    horizontal = 8.dp,
+                ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Send,
                     keyboardType = KeyboardType.Text,
@@ -246,15 +329,20 @@ fun BidDetailChatInput(
                     }
                 ),
                 onValueChange = onValueChange,
+                textStyle = TextStyle(
+                    color = Color.White,
+                ),
+                cursorBrush = SolidColor(Color.White),
                 decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier
                             .padding(4.dp),
                         contentAlignment = Alignment.CenterStart,
                     ) {
-                        if (inputValue.value.isEmpty()) {
+                        if (inputValue.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.bid_chat_input_hint),
+                                color = Color.LightGray,
                             )
                         }
                         innerTextField()
@@ -336,12 +424,12 @@ fun BidDetailItemInfo(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BidDetailItemInfoBottomSheet(
-    bottomSheetState: State<Boolean>,
+    showBottomSheet: Boolean,
     onDismiss: () -> Unit,
     sheetState: SheetState,
     collectableModel: CollectableModel,
 ) {
-    if (bottomSheetState.value) {
+    if (showBottomSheet) {
         GenericModalBottomSheet(
             sheetState = sheetState,
             onDismiss = onDismiss,
@@ -384,6 +472,10 @@ fun BidDetailItemInfoBottomSheet(
                         items(collectableModel.collectableBids) { item ->
                             Row(
                                 modifier = Modifier
+                                    .padding(
+                                        vertical = 4.dp,
+                                        horizontal = 8.dp,
+                                    )
                                     .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
@@ -419,7 +511,13 @@ fun BidDetailItemInfoBottomSheet(
 }
 
 @Composable
-fun BidButtonRow(userIntent: (BidDetailUserIntent) -> Unit, collectableModel: CollectableModel) {
+fun BidButtonRow(
+    userIntent: (BidDetailUserIntent) -> Unit,
+    collectableModel: CollectableModel,
+    customClick: () -> Unit,
+) {
+    val currentIncrementalBid = collectableModel.collectableBids.last().bidAmount + 10
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -432,7 +530,7 @@ fun BidButtonRow(userIntent: (BidDetailUserIntent) -> Unit, collectableModel: Co
                 .weight(1f),
             buttonText = stringResource(R.string.bid_custom_button_text),
             onClickListener = {
-
+                customClick.invoke()
             },
         )
         Spacer(
@@ -443,10 +541,15 @@ fun BidButtonRow(userIntent: (BidDetailUserIntent) -> Unit, collectableModel: Co
                 .weight(1f),
             buttonText = stringResource(
                 R.string.bid_increment_button_text,
-                collectableModel.collectableBids.last().bidAmount + 10
+                currentIncrementalBid
             ),
             onClickListener = {
-                userIntent.invoke(BidDetailUserIntent.Bid)
+                userIntent.invoke(
+                    BidDetailUserIntent.Bid(
+                        bidAmount = currentIncrementalBid,
+                        collectableId = collectableModel.collectableId,
+                    )
+                )
             },
             isEnabled = true,
         )

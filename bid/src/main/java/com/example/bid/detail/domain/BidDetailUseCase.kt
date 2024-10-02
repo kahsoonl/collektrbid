@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BidDetailUseCase {
     fun fetchCollectableDataFromLocal(collectableId: Int): Flow<CollectableModel>
+    fun insertBidToLocal(bidAmount: Double, collectableId: Int): Flow<Long>
 }

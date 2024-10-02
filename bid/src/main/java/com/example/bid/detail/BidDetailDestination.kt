@@ -1,7 +1,9 @@
 package com.example.bid.detail
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import com.example.bid.detail.view.BidDetailDataLoaded
 import com.example.bid.detail.view.screen.BidDetailInitialLoading
 import com.example.bid.detail.viewmodel.BidDetailNavEffect
@@ -19,12 +21,22 @@ fun BidDetailDestination(
     navigationManager: NavigationManager,
     collectableId: Int,
 ) {
+    val context = LocalContext.current
+
     fun onUserAction(): (BidDetailUserIntent) -> Unit = {
         viewModel.handleIntent(it)
     }
 
     fun handleEffect(effect: BidDetailNavEffect) {
+        when (effect) {
+            BidDetailNavEffect.NavigateBack -> {
+                navigationManager.popBackStack()
+            }
 
+            is BidDetailNavEffect.ShowToast -> {
+                Toast.makeText(context, effect.toastMessage, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     when (viewState) {

@@ -16,43 +16,42 @@ class InitDummyDataContractImpl @Inject constructor(
             listOf(
                 CollectableEntity(
                     collectableName = "Nike Shoes",
-                    collectableDescription = "The shoe is one of a kind, is in immaculate condition and ready for new owner",
+                    collectableDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                 ),
                 CollectableEntity(
                     collectableName = "Summoned Skull",
-                    collectableDescription = "The shoe is one of a kind, is in immaculate condition and ready for new owner",
+                    collectableDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                 ),
                 CollectableEntity(
                     collectableName = "Blue Eyes White Dragon",
-                    collectableDescription = "The shoe is one of a kind, is in immaculate condition and ready for new owner",
+                    collectableDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                 ),
                 CollectableEntity(
                     collectableName = "Charizard First Edition",
-                    collectableDescription = "The shoe is one of a kind, is in immaculate condition and ready for new owner",
+                    collectableDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                 ),
                 CollectableEntity(
                     collectableName = "Deadpool and Wolverine Funkopop",
-                    collectableDescription = "The shoe is one of a kind, is in immaculate condition and ready for new owner",
+                    collectableDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                 ),
             )
         )
         collectableIds.forEach { collectableId ->
-
             val bidDummyData = listOf(
                 BidEntity(
                     collectableId = collectableId.toInt(),
-                    userName = "DarkMagician33 $collectableId",
-                    bidAmount = 50 + collectableId.toInt(),
+                    userName = "DarkMagician33",
+                    bidAmount = 50.00,
                 ),
                 BidEntity(
                     collectableId = collectableId.toInt(),
-                    userName = "NecessityNotLuxury $collectableId",
-                    bidAmount = 60 + collectableId.toInt(),
+                    userName = "NecessityNotLuxury",
+                    bidAmount = 60.00,
                 ),
                 BidEntity(
                     collectableId = collectableId.toInt(),
-                    userName = "smallSpoon2 $collectableId",
-                    bidAmount = 70 + collectableId.toInt(),
+                    userName = "smallSpoon2",
+                    bidAmount = 70.00,
                 ),
             )
 

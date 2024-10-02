@@ -3,6 +3,7 @@ package com.example.bid.detail.domain
 import com.example.bid.detail.data.repository.BidDetailLocalRepository
 import com.example.bid.detail.domain.model.BidModel
 import com.example.bid.overview.domain.model.CollectableModel
+import com.example.foundation.database.entity.bid.BidEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
@@ -28,5 +29,15 @@ class BidDetailUseCaseImpl @Inject constructor(
                     )
                 )
             }
+    }
+
+    override fun insertBidToLocal(bidAmount: Double, collectableId: Int): Flow<Long> {
+        return bidDetailLocalRepository.insertBidToLocal(
+            BidEntity(
+                bidAmount = bidAmount,
+                collectableId = collectableId,
+                userName = "CurrentTestUser",
+            )
+        )
     }
 }
